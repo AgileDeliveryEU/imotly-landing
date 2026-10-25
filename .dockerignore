@@ -1,0 +1,17 @@
+# Dependencies and build output are produced inside the image.
+node_modules
+dist
+*.tsbuildinfo
+
+# Repository metadata and documents never affect the bundle.
+.git
+.github
+*.md
+.gitignore
+.DS_Store
+
+# Deployment files are read by CI and the VPS, not by the build.
+deploy
+plans
+
+npm-debug.log*
