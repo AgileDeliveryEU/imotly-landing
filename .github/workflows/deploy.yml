@@ -63,18 +63,19 @@ jobs:
     name: Deploy to VPS
     needs: build
     runs-on: ubuntu-latest
+    environment: production
     steps:
       - uses: actions/checkout@v4
 
       - name: Sync compose file
         uses: appleboy/scp-action@v0.1.7
         with:
-          host: ${{ secrets.SSH_HOST }}
-          port: ${{ secrets.SSH_PORT }}
-          username: ${{ secrets.SSH_USERNAME }}
+          host: ${{ vars.SSH_HOST }}
+          port: ${{ vars.SSH_PORT }}
+          username: ${{ vars.SSH_USERNAME }}
           key: ${{ secrets.SSH_KEY }}
           source: docker-compose.yml
-          target: /srv/imotly-landing
+          target: /srv/imotly-landing/prod
 
       - name: Pull and restart
         uses: appleboy/ssh-action@v1.2.0
@@ -83,9 +84,9 @@ jobs:
           GHCR_TOKEN: ${{ secrets.GHCR_READ_TOKEN }}
           IMAGE_TAG: sha-${{ github.sha }}
         with:
-          host: ${{ secrets.SSH_HOST }}
-          port: ${{ secrets.SSH_PORT }}
-          username: ${{ secrets.SSH_USERNAME }}
+          host: ${{ vars.SSH_HOST }}
+          port: ${{ vars.SSH_PORT }}
+          username: ${{ vars.SSH_USERNAME }}
           key: ${{ secrets.SSH_KEY }}
           envs: GHCR_USER,GHCR_TOKEN,IMAGE_TAG
           script: |
@@ -93,7 +94,7 @@ jobs:
 
             echo "$GHCR_TOKEN" | docker login ghcr.io -u "$GHCR_USER" --password-stdin
 
-            cd /srv/imotly-landing
+            cd /srv/imotly-landing/prod
             # The published port is the default in docker-compose.yml, so the only value
             # this file carries is the image. Add HOST_PORT here only to override it.
             printf 'IMAGE_TAG=%s\n' "$IMAGE_TAG" > .env.next

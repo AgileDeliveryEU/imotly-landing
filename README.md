@@ -39,34 +39,48 @@ A push to `main` runs `.github/workflows/deploy.yml`:
 1. **check** — `npm ci`, `npm run lint`, `npm run build`. Any failure stops the deploy.
 2. **build** — multi-arch image (`linux/arm64`, `linux/amd64`) pushed to
    `ghcr.io/agiledeliveryeu/imotly-landing:sha-<commit>` and `:latest`.
-3. **deploy** — copies `docker-compose.yml` to `/srv/imotly-landing`, writes `.env` with one
-   line (`IMAGE_TAG=sha-<commit>`), then `docker compose pull`, `up -d`, and waits until the
-   container reports `healthy`. A failed health check prints the last 50 log lines and fails
-   the run.
+3. **deploy** — runs in the `production` environment: copies `docker-compose.yml` to
+   `/srv/imotly-landing/prod`, writes `.env` with one line (`IMAGE_TAG=sha-<commit>`), then
+   `docker compose pull`, `up -d`, and waits until the container reports `healthy`. A failed
+   health check prints the last 50 log lines and fails the run.
 
 The container publishes only on `127.0.0.1`, so a reverse proxy on the host is the only way
 in. Its port comes from the `HOST_PORT` default in `docker-compose.yml` (8090), not from CI.
 DNS, TLS certificates and the proxy blocks belong to the host and are not part of this
 repository.
 
-### Required repository secrets
+### Required configuration
+
+The deploy job runs in the `production` environment, so these belong under
+Settings → Environments → production rather than at repository level.
+
+Environment secrets:
 
 | Secret | Purpose |
 |---|---|
-| `SSH_HOST` | VPS host |
-| `SSH_PORT` | SSH port |
-| `SSH_USERNAME` | Deploy user that can run Docker and write `/srv/imotly-landing` |
-| `SSH_KEY` | Private key for that user |
-| `GHCR_READ_TOKEN` | Read-only GHCR token used by the VPS to pull the private image |
+| `SSH_KEY` | Private key of the deploy user |
+| `GHCR_READ_TOKEN` | Read-only GHCR token the VPS uses to pull the private image |
 
-`GITHUB_TOKEN` covers the push to GHCR. There are no variables and no deployment environment.
+Environment variables:
+
+| Variable | Purpose |
+|---|---|
+| `SSH_HOST` | VPS hostname or address |
+| `SSH_PORT` | SSH port, normally `22` |
+| `SSH_USERNAME` | Deploy user; must run Docker and write `/srv/imotly-landing/prod` |
+
+Only the private key and the registry token are secrets in the sense that matters: they are
+credentials and GitHub masks them in logs. The other three are identifiers, so they are
+variables and stay readable in a run log, which is what makes an SSH failure diagnosable.
+
+`GITHUB_TOKEN` covers the push to GHCR, so the build job needs no stored credential.
 
 ### Rollback
 
 Every deploy leaves earlier `sha-*` images on disk, because only dangling layers are pruned.
 
 ```bash
-cd /srv/imotly-landing
+cd /srv/imotly-landing/prod
 sed -i 's/^IMAGE_TAG=.*/IMAGE_TAG=sha-<previous commit>/' .env
 docker compose up -d
 ```
