@@ -1,0 +1,127 @@
+name: Deploy landing
+run-name: Deploy ${{ github.ref_name }} to imot.ly (${{ github.actor }})
+
+on:
+  push:
+    branches: [main]
+
+concurrency:
+  group: deploy-landing
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    name: Lint and build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+
+      - run: npm ci
+      - run: npm run lint
+      - run: npm run build
+
+  build:
+    name: Build and push image
+    needs: check
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: docker/setup-buildx-action@v3
+
+      - uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      # Multi-arch because the build stage is pinned to BUILDPLATFORM: the bundle is
+      # compiled once, so the second platform costs only the nginx layer.
+      - uses: docker/build-push-action@v6
+        with:
+          context: .
+          platforms: linux/arm64,linux/amd64
+          push: true
+          tags: |
+            ghcr.io/agiledeliveryeu/imotly-landing:sha-${{ github.sha }}
+            ghcr.io/agiledeliveryeu/imotly-landing:latest
+          cache-from: type=gha,scope=landing
+          cache-to: type=gha,scope=landing,mode=max
+
+  deploy:
+    name: Deploy to VPS
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Sync compose file
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          port: ${{ secrets.SSH_PORT }}
+          username: ${{ secrets.SSH_USERNAME }}
+          key: ${{ secrets.SSH_KEY }}
+          source: docker-compose.yml
+          target: /srv/imotly-landing
+
+      - name: Pull and restart
+        uses: appleboy/ssh-action@v1.2.0
+        env:
+          GHCR_USER: agiledeliveryeu
+          GHCR_TOKEN: ${{ secrets.GHCR_READ_TOKEN }}
+          IMAGE_TAG: sha-${{ github.sha }}
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          port: ${{ secrets.SSH_PORT }}
+          username: ${{ secrets.SSH_USERNAME }}
+          key: ${{ secrets.SSH_KEY }}
+          envs: GHCR_USER,GHCR_TOKEN,IMAGE_TAG
+          script: |
+            set -e
+
+            echo "$GHCR_TOKEN" | docker login ghcr.io -u "$GHCR_USER" --password-stdin
+
+            cd /srv/imotly-landing
+            # The published port is the default in docker-compose.yml, so the only value
+            # this file carries is the image. Add HOST_PORT here only to override it.
+            printf 'IMAGE_TAG=%s\n' "$IMAGE_TAG" > .env.next
+            # Validate the rendered pair before anything replaces the running stack.
+            docker compose --env-file .env.next -f docker-compose.yml config -q
+            mv .env.next .env
+
+            docker compose pull
+            docker compose up -d --remove-orphans
+
+            container=$(docker compose ps -q landing)
+            if [ -z "$container" ]; then
+              docker compose logs --tail=50
+              echo 'Landing container did not start'
+              exit 1
+            fi
+            for _ in $(seq 1 24); do
+              status=$(docker inspect --format '{{.State.Health.Status}}' "$container")
+              [ "$status" = healthy ] && break
+              sleep 2
+            done
+            if [ "$status" != healthy ]; then
+              docker compose logs --tail=50
+              echo "Landing container is $status, expected healthy"
+              exit 1
+            fi
+
+            echo "Serving on $(docker compose port landing 80)"
+            docker compose ps
+            # Dangling layers only: sha-tagged images stay on disk for rollback.
+            docker image prune -f
