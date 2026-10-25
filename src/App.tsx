@@ -77,7 +77,7 @@ function Header() {
     <header className="site-header">
       <nav className="container nav-shell" aria-label="Основна навигация">
         <a href="#" className="logo-link" aria-label="imot.ly начало" onClick={closeMenu}>
-          <img className="logo-image" src="/assets/imotly-logo.png" alt="" aria-hidden="true" />
+          <img className="logo-image" src="/img/imotly-logo.png" alt="" aria-hidden="true" />
           <span className="brand-word">IMOT.LY</span>
         </a>
 
@@ -272,10 +272,10 @@ function ProductDemo() {
           <ProductFrame label="Демо визуализация на imot.ly в Telegram">
             <div className="product-screenshots" aria-label="Екрани от IMOT.LY в Telegram">
               <figure className="product-shot">
-                <img src="/assets/product-radars.webp" alt="Екран с активни имотни търсения в IMOT.LY" loading="lazy" decoding="async" width="842" height="1706" />
+                <img src="/img/product-radars.webp" alt="Екран с активни имотни търсения в IMOT.LY" loading="lazy" decoding="async" width="842" height="1706" />
               </figure>
               <figure className="product-shot">
-                <img src="/assets/product-listing.webp" alt="Екран с детайли за нова имотна обява в IMOT.LY" loading="lazy" decoding="async" width="844" height="1714" />
+                <img src="/img/product-listing.webp" alt="Екран с детайли за нова имотна обява в IMOT.LY" loading="lazy" decoding="async" width="844" height="1714" />
               </figure>
             </div>
           </ProductFrame>
@@ -417,13 +417,13 @@ function Footer() {
       <div className="container footer-grid">
         <div className="footer-brand">
           <a href="#" className="logo-link" aria-label="imot.ly начало">
-            <img className="logo-image" src="/assets/imotly-logo.png" alt="" aria-hidden="true" />
+            <img className="logo-image" src="/img/imotly-logo.png" alt="" aria-hidden="true" />
             <span className="brand-word">IMOT.LY</span>
           </a>
           <p className="footer-powered">
             <span>Powered by</span>
             <a href="https://agiledelivery.eu" target="_blank" rel="noreferrer" aria-label="AgileDelivery website">
-              <img src="/assets/agile-delivery-logo.svg" alt="" aria-hidden="true" />
+              <img src="/img/agile-delivery-logo.svg" alt="" aria-hidden="true" />
               <span>AgileDelivery</span>
             </a>
           </p>

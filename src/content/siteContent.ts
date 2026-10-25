@@ -103,7 +103,7 @@ export const photoShowcase = [
   {
     title: "Работа с клиенти",
     description: "Няколко отделни сценария паралелно.",
-    imageUrl: "/assets/clients-meeting.png",
+    imageUrl: "/img/clients-meeting.png",
     alt: "Брокер разговаря с клиенти за имот",
   },
 ];
