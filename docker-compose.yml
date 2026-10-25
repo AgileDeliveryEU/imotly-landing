@@ -1,0 +1,18 @@
+name: imotly-landing
+
+services:
+  landing:
+    image: ghcr.io/agiledeliveryeu/imotly-landing:${IMAGE_TAG:-latest}
+    # Kept for local use: `docker compose up --build` builds from this checkout.
+    build:
+      context: .
+    ports:
+      - "127.0.0.1:${HOST_PORT:-8090}:80"
+    restart: unless-stopped
+    # Deployment waits for this before it reports success.
+    healthcheck:
+      test: ["CMD", "wget", "-q", "-O", "/dev/null", "http://127.0.0.1/"]
+      interval: 10s
+      timeout: 3s
+      retries: 3
+      start_period: 3s
