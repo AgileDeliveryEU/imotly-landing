@@ -1,4 +1,4 @@
-import { ChevronDown, ExternalLink, type LucideIcon } from "lucide-react";
+import { Plus, ExternalLink, type LucideIcon } from "lucide-react";
 import type { ReactNode } from "react";
 
 type IconCardProps = {
@@ -46,51 +46,21 @@ export function ValueItem({ icon: Icon, title, description }: ValueItemProps) {
 type ProductFrameProps = {
   children: ReactNode;
   label: string;
+  className?: string;
+  address?: string;
 };
 
-export function ProductFrame({ children, label }: ProductFrameProps) {
+export function ProductFrame({ children, label, className = "", address }: ProductFrameProps) {
   return (
-    <div className="product-frame" aria-label={label}>
-      <div className="product-frame-bar" aria-hidden="true">
+    <div className={`product-frame ${className}`} aria-label={label}>
+      <div className="browser-bar" aria-hidden="true">
         <span />
         <span />
         <span />
+        {address ? <b>{address}</b> : null}
       </div>
       {children}
     </div>
-  );
-}
-
-type PricingCardProps = {
-  name: string;
-  duration: string;
-  originalPrice: string;
-  promotionalPrice: string;
-  suitableFor: string;
-  badge?: string;
-  note?: string;
-  featured?: boolean;
-  cta: ReactNode;
-};
-
-export function PricingCard({ name, duration, originalPrice, promotionalPrice, suitableFor, badge, note, featured, cta }: PricingCardProps) {
-  return (
-    <article className={`pricing-card reveal-card ${featured ? "pricing-card-featured" : ""}`}>
-      <div className="pricing-card-header">
-        <div>
-          <h3>{name}</h3>
-          <p className="pricing-duration">{duration}</p>
-        </div>
-        {badge ? <span className="pricing-badge">{badge}</span> : null}
-      </div>
-      <div className="pricing-price-stack">
-        <span className="pricing-original">{originalPrice}</span>
-        <strong>{promotionalPrice}</strong>
-      </div>
-      <p className="pricing-suitable">{suitableFor}</p>
-      {note ? <p className="pricing-note">{note}</p> : null}
-      {cta}
-    </article>
   );
 }
 
@@ -102,11 +72,11 @@ type FAQItem = {
 export function FAQAccordion({ items }: { items: FAQItem[] }) {
   return (
     <div className="faq-list">
-      {items.map((item) => (
-        <details className="faq-item" key={item.question}>
+      {items.map((item, index) => (
+        <details className="faq-item" key={item.question} open={index === 0}>
           <summary>
             <span>{item.question}</span>
-            <ChevronDown size={19} aria-hidden="true" />
+            <Plus size={19} aria-hidden="true" />
           </summary>
           <p>{item.answer}</p>
         </details>

@@ -1,38 +1,37 @@
 import { useEffect, useState } from "react";
+import FigmaLanding from "./FigmaLanding";
 import {
   Bell,
-  Briefcase,
+  AppWindow,
   Building2,
   ChevronRight,
-  Clock3,
   Menu,
   Search,
   Send,
   SlidersHorizontal,
   X,
-  UserRound,
 } from "lucide-react";
 import { ButtonLink } from "./components/Buttons";
-import { FAQAccordion, IconCard, PhotoCard, PricingCard, ProductFrame, ValueItem } from "./components/Cards";
+import { FAQAccordion, IconCard, PhotoCard, ProductFrame, ValueItem } from "./components/Cards";
 import { SectionHeader } from "./components/SectionHeader";
 import {
   audiences,
+  audienceIntro,
   faqs,
   finalCta,
   hero,
   howItWorks,
+  howItWorksIntro,
   navLinks,
-  photoShowcase,
-  pricing,
+  freeTrial,
   scenario,
   trustPoints,
 } from "./content/siteContent";
 
-const valueIcons = [Building2, Bell, Clock3];
+const valueIcons = [Building2, Bell, AppWindow];
 const stepIcons = [SlidersHorizontal, Search, Send];
-const audienceIcons = [UserRound, Building2, Briefcase];
 
-function App() {
+export function LegacyLanding() {
   return (
     <div className="site-shell">
       <Header />
@@ -44,8 +43,7 @@ function App() {
         <ProductDemo />
         <Scenario />
         <AudienceSection />
-        <PhotoShowcase />
-        <PricingSection />
+        <FreeTrialSection />
         <FAQSection />
         <FinalCTA />
       </main>
@@ -114,7 +112,7 @@ function Header() {
 
           <div className="mobile-menu-actions">
             <ButtonLink href="#pricing" variant="secondary" showArrow>
-              Виж цената
+              Опитай безплатно
             </ButtonLink>
           </div>
         </div>
@@ -189,7 +187,7 @@ function Hero() {
             <ButtonLink id="hero-primary-cta" href="#pricing" className="hero-primary-cta" showArrow>
               Започни сега
             </ButtonLink>
-            <p className="hero-cta-helper">Избери план и започни за минута.</p>
+            <p className="hero-cta-helper">Започни с 10 дни безплатно.</p>
           </div>
         </div>
 
@@ -198,19 +196,19 @@ function Hero() {
           <figcaption className="sr-only">{hero.imageAlt}</figcaption>
           <div className="hero-search-card" aria-hidden="true">
             <span>Търсене</span>
-            <strong>Двустаен в София</strong>
-            <p>Лозенец · Иван Вазов · до 280 000{"\u00a0"}€</p>
+            <strong>Двустаен в Лозенец</strong>
+            <p>София · до 215 000{"\u00a0"}€</p>
             <div>
-              <small>imot.bg</small>
-              <small>olx.bg</small>
-              <small>alo.bg</small>
+              <small>Големите имотни сайтове</small>
             </div>
           </div>
           <div className="hero-alert-card" aria-hidden="true">
             <span className="alert-dot" />
             <div>
-              <strong>Нова подходяща обява</strong>
-              <p>пристигна в Telegram преди 4 мин</p>
+              <span className="telegram-kicker">Telegram известие</span>
+              <strong>Нов двустаен в Лозенец</strong>
+              <p>76 кв.м · 215 000{"\u00a0"}€</p>
+              <small>Публикуван преди 2 минути</small>
             </div>
           </div>
         </figure>
@@ -238,12 +236,7 @@ function HowItWorks() {
   return (
     <section className="section" id="kak-raboti">
       <div className="container split-section">
-        <SectionHeader
-          align="left"
-          eyebrow="Как работи"
-          title="От първото търсене до първата добра обява."
-          description="Три ясни стъпки, без ново приложение и без постоянно проверяване на сайтове."
-        />
+        <SectionHeader align="left" {...howItWorksIntro} />
         <div className="steps-grid">
           {howItWorks.map((step, index) => {
             const Icon = stepIcons[index];
@@ -257,34 +250,18 @@ function HowItWorks() {
 
 function ProductDemo() {
   return (
-    <section className="section section-white" id="demo">
+    <section className="section section-white" id="demo" aria-label="Екрани от приложението imot.ly">
       <div className="container demo-layout">
-        <div>
-          <SectionHeader
-            align="left"
-            eyebrow="Продуктът"
-            title="Твоята пряка връзка с големите имотни сайтове"
-            description="Задаваш филтри, получаваш новите съвпадения и отваряш оригиналната обява, когато искаш да видиш детайлите."
-          />
-        </div>
-
-        <div className="demo-product-column">
-          <ProductFrame label="Демо визуализация на imot.ly в Telegram">
-            <div className="product-screenshots" aria-label="Екрани от IMOT.LY в Telegram">
-              <figure className="product-shot">
-                <img src="/img/product-radars.webp" alt="Екран с активни имотни търсения в IMOT.LY" loading="lazy" decoding="async" width="842" height="1706" />
-              </figure>
-              <figure className="product-shot">
-                <img src="/img/product-listing.webp" alt="Екран с детайли за нова имотна обява в IMOT.LY" loading="lazy" decoding="async" width="844" height="1714" />
-              </figure>
-            </div>
-          </ProductFrame>
-          <div className="demo-followup-cta">
-            <ButtonLink href="#pricing" className="stationary-cta" showArrow>
-              Започни сега
-            </ButtonLink>
+        <ProductFrame label="Приложението imot.ly в Telegram">
+          <div className="product-screenshots" aria-label="Екрани от IMOT.LY в Telegram">
+            <figure className="product-shot">
+              <img src="/img/product-radars.webp" alt="Екран с активни имотни търсения в IMOT.LY" loading="lazy" decoding="async" width="842" height="1706" />
+            </figure>
+            <figure className="product-shot">
+              <img src="/img/product-listing.webp" alt="Екран с детайли за нова имотна обява в IMOT.LY" loading="lazy" decoding="async" width="844" height="1714" />
+            </figure>
           </div>
-        </div>
+        </ProductFrame>
       </div>
     </section>
   );
@@ -312,42 +289,15 @@ function AudienceSection() {
     <section className="audience-section" aria-labelledby="audience-title">
       <div className="container">
         <div className="audience-hero">
-          <p className="audience-pill">За всички, които търсят имоти</p>
+          <p className="audience-pill">{audienceIntro.eyebrow}</p>
           <h2 id="audience-title">
-            Първи до имотите, <span>важни за теб.</span>
-            <br />
-            Полезен за търсещи и за брокери.
+            {audienceIntro.title} <span>{audienceIntro.highlight}</span>
           </h2>
-          <p>
-            Получавай новите обяви веднага и действай преди останалите. Спести време, намери повече възможности и затвори сделка по-бързо.
-          </p>
+          <p>{audienceIntro.description}</p>
         </div>
         <div className="audience-grid">
-          {audiences.map((audience, index) => {
-            const Icon = audienceIcons[index];
-            return <IconCard key={audience.title} icon={Icon} {...audience} />;
-          })}
-        </div>
-      </div>
-    </section>
-  );
-}
-
-function PhotoShowcase() {
-  return (
-    <section className="photo-section" aria-labelledby="photo-title">
-      <div className="container">
-        <div className="photo-heading">
-          <SectionHeader
-            align="left"
-            eyebrow="Контекст"
-            title="Имотни ситуации, не абстрактни обещания."
-            description="Сайтът остава близо до реалното търсене: квартали, бюджет, подходящо жилище и работа с повече от един сценарий."
-          />
-        </div>
-        <div className="photo-grid">
-          {photoShowcase.map((photo) => (
-            <PhotoCard key={photo.title} {...photo} />
+          {audiences.map((audience) => (
+            <PhotoCard key={audience.title} {...audience} />
           ))}
         </div>
       </div>
@@ -355,27 +305,13 @@ function PhotoShowcase() {
   );
 }
 
-function PricingSection() {
+function FreeTrialSection() {
   return (
-    <section className="section section-white" id="pricing">
-      <div className="container pricing-layout">
-        <div className="pricing-copy">
-          <SectionHeader align="left" eyebrow={pricing.eyebrow} title={pricing.title} description={pricing.description} />
-          <p className="pricing-note-main">{pricing.note}</p>
-        </div>
-        <div className="pricing-cards" aria-label="Планове за IMOT.LY">
-          {pricing.plans.map((plan) => (
-            <PricingCard
-              key={plan.name}
-              {...plan}
-              cta={
-                <ButtonLink href={plan.href} className="pricing-button stationary-cta" ariaLabel={`Избери план ${plan.name}`} showArrow>
-                  {plan.cta}
-                </ButtonLink>
-              }
-            />
-          ))}
-        </div>
+    <section className="section section-white" id="pricing" aria-label="Безплатен пробен период">
+      <div className="container free-trial-section">
+        <ButtonLink href={freeTrial.href} className="stationary-cta free-trial-button" showArrow>
+          {freeTrial.label}
+        </ButtonLink>
       </div>
     </section>
   );
@@ -440,4 +376,6 @@ function Footer() {
   );
 }
 
-export default App;
+export default function App() {
+  return <FigmaLanding />;
+}

@@ -291,7 +291,6 @@ summary {
 
   .hero-label,
   .section-eyebrow,
-  .pricing-label,
   .demo-kicker {
     @apply text-sm font-semibold text-brand;
   }
@@ -368,6 +367,14 @@ summary {
 
   .hero-alert-card p {
     @apply mt-1 text-xs leading-5 text-muted;
+  }
+
+  .hero-alert-card small {
+    @apply mt-1 block text-xs font-medium text-brand;
+  }
+
+  .telegram-kicker {
+    @apply mb-1 block text-[0.7rem] font-semibold text-muted;
   }
 
   .alert-dot {
@@ -449,7 +456,7 @@ summary {
   }
 
   .audience-hero p:not(.audience-pill) {
-    @apply mx-auto mt-4 max-w-3xl text-base leading-7 text-muted sm:text-lg sm:leading-8;
+    @apply mt-4 max-w-3xl text-base leading-7 text-muted sm:text-lg sm:leading-8;
   }
 
   .steps-grid,
@@ -483,19 +490,7 @@ summary {
   }
 
   .demo-layout {
-    @apply grid min-w-0 gap-9 lg:grid-cols-[0.72fr_1.28fr] lg:items-center;
-  }
-
-  .demo-product-column {
-    @apply grid min-w-0 gap-5;
-  }
-
-  .demo-followup-cta {
-    @apply flex justify-start lg:justify-end;
-  }
-
-  .demo-followup-cta .button-link {
-    @apply w-full sm:w-auto;
+    @apply min-w-0 max-w-4xl;
   }
 
   .product-frame {
@@ -547,18 +542,6 @@ summary {
     @apply h-full min-h-64 w-full object-cover;
   }
 
-  .photo-section {
-    @apply overflow-x-hidden border-y border-line bg-white py-14 sm:py-16 lg:py-20;
-  }
-
-  .photo-heading {
-    @apply max-w-4xl;
-  }
-
-  .photo-grid {
-    @apply mt-8 grid min-w-0 gap-4 md:grid-cols-3;
-  }
-
   .photo-card {
     @apply min-w-0 overflow-hidden rounded-lg border border-line bg-paper shadow-card;
   }
@@ -583,83 +566,26 @@ summary {
     @apply mt-2 text-sm leading-6 text-muted;
   }
 
-  .pricing-layout {
-    @apply grid min-w-0 gap-8;
+  .free-trial-section {
+    @apply flex justify-center;
   }
 
-  .pricing-copy {
-    @apply max-w-3xl;
+  #pricing {
+    scroll-margin-top: 5rem;
   }
 
-  .pricing-note-main {
-    @apply mt-4 max-w-2xl text-sm leading-6 text-muted;
+  .free-trial-button {
+    @apply w-full max-w-xl gap-4 text-center text-base sm:text-lg;
+    min-height: 5rem !important;
   }
 
-  .pricing-cards {
-    @apply grid min-w-0 gap-4 lg:grid-cols-3;
+  .free-trial-button span {
+    white-space: normal;
+    line-height: 1.5;
   }
 
-  .pricing-card {
-    @apply flex min-w-0 flex-col rounded-lg border border-line bg-white p-5 shadow-card sm:p-6;
-  }
-
-  .pricing-card-featured {
-    @apply border-brand/35 shadow-soft;
-    background: linear-gradient(180deg, #eef4ff 0%, #fff9e8 100%);
-  }
-
-  .pricing-card-header {
-    @apply flex min-w-0 items-start justify-between gap-3;
-  }
-
-  .pricing-card h3 {
-    @apply text-xl font-semibold leading-tight text-ink;
-  }
-
-  .pricing-duration {
-    @apply mt-1 text-sm font-medium text-muted;
-  }
-
-  .pricing-badge {
-    @apply shrink-0 rounded-lg bg-brandSoft px-2.5 py-1 text-xs font-semibold text-brand;
-  }
-
-  .pricing-price-stack {
-    @apply mt-6 grid gap-1;
-  }
-
-  .pricing-original {
-    @apply text-sm font-semibold text-muted line-through decoration-muted/60;
-  }
-
-  .pricing-price-stack strong {
-    @apply text-4xl font-semibold leading-none text-ink;
-  }
-
-  .pricing-suitable,
-  .pricing-note {
-    @apply mt-4 text-base leading-7 text-muted;
-  }
-
-  .pricing-note {
-    @apply text-sm leading-6;
-  }
-
-  .pricing-button {
-    @apply w-full justify-center;
-  }
-
-  .pricing-button.stationary-cta {
-    min-height: 3.4rem !important;
-  }
-
-  .pricing-card .pricing-button {
-    margin-top: auto;
-  }
-
-  .pricing-suitable,
-  .pricing-note {
-    padding-bottom: 1.75rem;
+  .free-trial-button > svg {
+    flex-shrink: 0;
   }
 
   .faq-layout {
@@ -811,8 +737,7 @@ summary {
 
 
   .section,
-  .audience-section,
-  .photo-section {
+  .audience-section {
     padding-top: 3.25rem;
     padding-bottom: 3.25rem;
   }
@@ -834,7 +759,6 @@ summary {
   }
 
   .section-header,
-  .photo-heading,
   .audience-hero {
     max-width: none;
     text-align: left;
@@ -854,13 +778,10 @@ summary {
     line-height: 1.7;
   }
 
-  .demo-layout,
-  .split-section,
-  .pricing-layout {
+  .split-section {
     gap: 2rem;
   }
 
-  .demo-followup-cta .button-link,
   .final-cta-card .button-link {
     width: 100%;
   }
@@ -900,7 +821,6 @@ summary {
   }
 
   .icon-card,
-  .pricing-card,
   .scenario-card,
   .final-cta-card,
   .photo-card {
@@ -920,6 +840,11 @@ summary {
   .hero-alert-card {
     left: 1rem;
     right: 1rem;
+  }
+
+  .hero-visual > img {
+    aspect-ratio: 4 / 5;
+    min-height: 23rem;
   }
 
   .site-footer {
@@ -996,7 +921,6 @@ summary {
   .trust-section,
   .scenario-section,
   .audience-section,
-  .photo-section,
   .final-cta {
     overflow-x: clip;
   }
