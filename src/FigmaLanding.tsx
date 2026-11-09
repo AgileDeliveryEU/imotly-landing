@@ -203,7 +203,7 @@ function FinalCTA() {
 function Footer() {
   return (
     <footer id="site-footer">
-      <div className="container footer-inner"><Logo /><p>Новите имотни обяви навреме.</p><div><a href="#faq">Въпроси</a><a href="#contacts">Контакти</a><a href="#top">Нагоре ↑</a></div></div>
+      <div className="container footer-inner"><Logo /><p>Новите имотни обяви навреме.</p><div><a href="#faq">Въпроси</a><a href="#top">Нагоре ↑</a></div></div>
       <div className="container footer-details">
         <p className="footer-powered">Powered by <a href="https://agiledelivery.eu" target="_blank" rel="noreferrer"><img src="/img/agile-delivery-logo.svg" alt="" width="22" height="22" />AgileDelivery</a></p>
         <div className="footer-contacts" id="contacts">
