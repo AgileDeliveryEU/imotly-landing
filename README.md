@@ -5,7 +5,7 @@ by nginx inside one container.
 
 There is no runtime configuration. The active landing page is `src/FigmaLanding.tsx`,
 with copy and the app link in `src/content/landingContent.ts` and styles in
-`src/landing.css`. The page offers a 10-day free trial and leaves plans and pricing to
+`src/landing.css`. The page offers a free trial and leaves plans and pricing to
 `https://app.imot.ly`. Values are fixed when the bundle is built, so a deploy is the only
 way to change them. Product screenshots live in `public/img/`; source labels are masked
 in the displayed previews by `src/components/AppScreenshot.tsx`.

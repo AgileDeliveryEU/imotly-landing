@@ -1087,3 +1087,25 @@ footer {
 @media (max-width: 560px) {
   .app-phone-detail .app-screenshot { width: 72%; }
 }
+
+@media (max-width: 767px) {
+  .how-section .section-heading { margin-bottom: 28px; }
+  .how-section .feature-grid > .feature { min-height: 0; padding: 0; }
+  .how-section .feature h3 { max-width: none; margin: 0; font-size: 18px; }
+  .feature-toggle { display: grid; grid-template-columns: 28px minmax(0, 1fr) 20px; align-items: center; gap: 12px; width: 100%; min-height: 72px; padding: 16px 0; text-align: left; font-weight: 700; line-height: 1.4; cursor: pointer; }
+  .feature-toggle .feature-number { font-size: 21px; font-weight: 400; }
+  .feature-toggle > svg { color: var(--blue); transition: transform 180ms ease; }
+  .feature-toggle[aria-expanded="true"] > svg { transform: rotate(180deg); }
+  .how-section .feature > p { max-width: none; margin: 0 0 20px; }
+  .how-section .feature-visual { margin-bottom: 20px; }
+  .audience-section { padding-bottom: 32px; }
+  .audience-heading { margin-bottom: 20px; font-size: 32px; }
+  .audience-columns article, .audience-columns article:first-child, .audience-columns article:last-child { padding: 0; }
+  .audience-columns h3 { margin: 0; font-size: 18px; }
+  .audience-toggle { display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 64px; width: 100%; padding: 16px 0; text-align: left; font-weight: 700; cursor: pointer; }
+  .audience-toggle svg { flex-shrink: 0; color: var(--blue); transition: transform 180ms ease; }
+  .audience-toggle[aria-expanded="true"] svg { transform: rotate(180deg); }
+  .audience-columns p { padding-bottom: 20px; }
+  .audience-trial { margin-top: 24px; }
+  .audience-trial .free-trial-button { min-height: 64px; max-width: 340px; padding: 12px 20px; gap: 18px; font-size: 16px; }
+}

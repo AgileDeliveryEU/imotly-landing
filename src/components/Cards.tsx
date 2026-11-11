@@ -72,8 +72,8 @@ type FAQItem = {
 export function FAQAccordion({ items }: { items: FAQItem[] }) {
   return (
     <div className="faq-list">
-      {items.map((item, index) => (
-        <details className="faq-item" key={item.question} open={index === 0}>
+      {items.map((item) => (
+        <details className="faq-item" key={item.question}>
           <summary>
             <span>{item.question}</span>
             <Plus size={19} aria-hidden="true" />

@@ -187,7 +187,7 @@ function Hero() {
             <ButtonLink id="hero-primary-cta" href="#pricing" className="hero-primary-cta" showArrow>
               Започни сега
             </ButtonLink>
-            <p className="hero-cta-helper">Започни с 10 дни безплатно.</p>
+            <p className="hero-cta-helper">Започни безплатно.</p>
           </div>
         </div>
 

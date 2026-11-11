@@ -112,7 +112,7 @@ export const audiences = [
 ];
 
 export const freeTrial = {
-  label: "ОПИТАЙ БЕЗПЛАТНО ЗА 10 ДНИ",
+  label: "ОПИТАЙ БЕЗПЛАТНО",
   href: "https://app.imot.ly",
 };
 

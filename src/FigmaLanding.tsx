@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
-import { ArrowDown, ArrowRight, List, Mail, Menu, Phone, X } from "lucide-react";
+import { ArrowDown, ArrowRight, ChevronDown, List, Mail, Menu, Phone, X } from "lucide-react";
 import { ButtonLink } from "./components/Buttons";
 import { FAQAccordion, ProductFrame } from "./components/Cards";
 import { AppScreenshot } from "./components/AppScreenshot";
+import { useMobileAccordion } from "./hooks/useMobileAccordion";
 import { audiences, contact, faqs, finalCta, freeTrial, hero, howItWorks, howItWorksIntro, navLinks, product, scenario, screenshots } from "./content/landingContent";
 
 function Logo({ onClick }: { onClick?: () => void }) {
@@ -101,6 +102,7 @@ function Hero() {
 }
 
 function HowItWorks() {
+  const { isMobile, expandedIndex, toggle } = useMobileAccordion();
   return (
     <section className="section how-section" id="kak-raboti" aria-labelledby="how-title">
       <div className="container">
@@ -111,7 +113,17 @@ function HowItWorks() {
         <div className="feature-grid">
           {howItWorks.map((step, index) => (
             <article className="feature" key={step.number}>
-              <div className="feature-number">{step.number}</div><h3>{step.title}</h3><p>{step.description}</p>
+              {!isMobile && <div className="feature-number">{step.number}</div>}
+              <h3>
+                {isMobile ? (
+                  <button className="feature-toggle" type="button" aria-expanded={expandedIndex === index}
+                    aria-controls={`step-description-${index}`} onClick={() => toggle(index)}>
+                    <span className="feature-number" aria-hidden="true">{step.number}</span>
+                    <span>{step.title}</span><ChevronDown size={20} aria-hidden="true" />
+                  </button>
+                ) : step.title}
+              </h3>
+              <p id={`step-description-${index}`} hidden={isMobile && expandedIndex !== index}>{step.description}</p>
               <div className={`feature-visual visual-${step.number}`} aria-hidden="true">
                 {index === 0 && ["Апартамент", "Наем", "София"].map(filter => <span className="site-tag" key={filter}>{filter}</span>)}
                 {index === 1 && ["Лозенец", "до 1200 €", "3 стаи"].map(filter => <span key={filter}>{filter}<b>×</b></span>)}
@@ -161,15 +173,26 @@ function Scenario() {
 }
 
 function AudienceSection() {
+  const { isMobile, expandedIndex, toggle } = useMobileAccordion();
+
   return (
     <section className="audience-section" id="for-who" aria-labelledby="audience-title">
       <div className="container">
         <h2 className="audience-heading" id="audience-title">Подходящо за</h2>
         <div className="audience-columns">
-          {audiences.map(audience => (
+          {audiences.map((audience, index) => (
             <article key={audience.title}>
-              <h3>{audience.title}</h3>
-              <p>{audience.description}{audience.link && <a href={audience.link.href}>{audience.link.label}</a>}{audience.afterLink}</p>
+              <h3>
+                {isMobile ? (
+                  <button className="audience-toggle" type="button" aria-expanded={expandedIndex === index}
+                    aria-controls={`audience-description-${index}`} onClick={() => toggle(index)}>
+                    <span>{audience.title}</span><ChevronDown size={20} aria-hidden="true" />
+                  </button>
+                ) : audience.title}
+              </h3>
+              <p id={`audience-description-${index}`} hidden={isMobile && expandedIndex !== index}>
+                {audience.description}{audience.link && <a href={audience.link.href}>{audience.link.label}</a>}{audience.afterLink}
+              </p>
             </article>
           ))}
         </div>

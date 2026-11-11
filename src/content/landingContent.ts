@@ -1,4 +1,4 @@
-export const freeTrial = { label: "ОПИТАЙ БЕЗПЛАТНО ЗА 10 ДНИ", href: "https://app.imot.ly" };
+export const freeTrial = { label: "ОПИТАЙ БЕЗПЛАТНО", href: "https://app.imot.ly" };
 
 export const contact = {
   title: "Контакти",
